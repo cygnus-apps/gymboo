@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339444274332",
+    "project_id": "gymboobd",
+    "storage_bucket": "gymboobd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339444274332:android:e10a4c4e44397d7bf0c959",
+        "android_client_info": {
+          "package_name": "com.example.gymboo_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxBYzeazAoddmWrTPsew-ZvM9FyAxiozg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gymboo_admin/common/widgets/images/t_rounded_image.dart';
+import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
+import 'package:gymboo_admin/utils/constants/colors.dart';
+import 'package:gymboo_admin/utils/constants/enums.dart';
+import 'package:gymboo_admin/utils/constants/image_strings.dart';
+import 'package:gymboo_admin/utils/constants/sizes.dart';
+import 'package:gymboo_admin/utils/device/device_utility.dart';
+import 'package:iconsax/iconsax.dart';
+
+class gbHeader extends StatelessWidget implements PreferredSize {
+  gbHeader({super.key, this.scaffoldKey});
+
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final SearchBoardController searchController = Get.find<SearchBoardController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: gbColors.white,
+          border: Border(bottom: BorderSide(color: gbColors.lightGrey, width: 1))
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: gbSizes.md, vertical: gbSizes.sm),
+      child: AppBar(
+        //Mobile Menu
+        leading: !gbDeviceUtils.isDesktopScreen(context)
+            ? IconButton(
+            onPressed: () => scaffoldKey?.currentState?.openDrawer(),
+            icon: const Icon(Iconsax.menu4))
+            : null,
+        //Search Field
+        title: SizedBox(
+          width: 777,
+          child: TextFormField(
+            controller: searchController.searchController,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Iconsax.search_normal),
+              hintText: 'Buscar... ',
+            ),
+          ),
+        ),
+
+        ///Acciones
+        actions: [
+          if (!gbDeviceUtils.isDesktopScreen(context))
+            IconButton(icon: const Icon(Iconsax.search_normal), onPressed: () {}),
+
+          IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
+
+          const SizedBox(
+            width: gbSizes.spaceBtwInputFields / 2,
+          ),
+          //DATOS DEL USUARIO
+          Row(
+            children: [
+              const gbRoundedImage(
+                imageType: ImageType.asset,
+                image: gbImages.user,
+                width: 40,
+                padding: 2,
+                height: 40,
+                //backgroundColor: gbColors.neonPing,
+              ),
+              const SizedBox(
+                width: gbSizes.sm,
+              ),
+              if (!gbDeviceUtils.isMobileScreen(context))
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Cygnus App',
+                        style: Theme.of(context).textTheme.titleMedium),
+                    Text('avega@gmail.com',
+                        style: Theme.of(context).textTheme.labelMedium),
+                  ],
+                )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget get child => throw UnimplementedError();
+
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(gbDeviceUtils.getAppBarHeight() + 15);
+}

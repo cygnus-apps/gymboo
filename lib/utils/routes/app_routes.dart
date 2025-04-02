@@ -1,0 +1,18 @@
+import 'package:get/get.dart';
+import 'package:gymboo_admin/features/authentication/screen_forget_password/forget_password.dart';
+import 'package:gymboo_admin/features/authentication/screen_reset_password/reset_password.dart';
+import 'package:gymboo_admin/features/authentication/screens_login/login.dart';
+import 'package:gymboo_admin/features/searchboards/screens_searchboards/searchboard.dart';
+
+import 'package:gymboo_admin/utils/routes/routes.dart';
+import 'package:gymboo_admin/utils/routes/routes_middleware.dart';
+
+class gbAppRoutes {
+  static final List<GetPage> pages = <GetPage>[
+    GetPage(name: gbRoutes.login, page: () => const LoginScreen()),
+    GetPage(name: gbRoutes.forgetPassword,page: () => const ForgetPasswordScreen()),
+    GetPage(name: gbRoutes.resetPassword, page: () => const ResetPasswordScreen()),
+    GetPage(name: gbRoutes.searchboard, page: () => const Searchboardcreen(),middlewares: [ gbRoutesMiddleware() ]),
+
+  ];
+}
