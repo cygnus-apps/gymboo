@@ -105,7 +105,7 @@ class SearchBoardController extends GetxController {
         description: "Definición de datos biométricos medibles por el gimnacio",
         image: "assets/images/mantenimientos/mnt_biometrico.jpg",
         icon: Iconsax.chart,
-        category: "ss",
+        category: "Prueba",
     ),
     ItemData(
         title: "Definición de rutinas",
