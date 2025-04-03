@@ -49,19 +49,16 @@ class gbSitebar extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Menu', style: Theme.of(context).textTheme.bodySmall!.apply(),),
+                            Text('Categorias', style: Theme.of(context).textTheme.bodySmall!.apply(),),
                             //Menu Items
-
-
-                            const gbMenuItem(icon: Iconsax.setting_2,   itemName: 'Parametros', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.setting_2,   itemName: 'Parametros', colori: gbColors.neonPink),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Symbols.exercise,  itemName: 'Gimnasio', colori: gbColors.primary),
+                            const gbMenuItem(icon: Symbols.exercise,  itemName: 'Gimnasio', colori: gbColors.neonPink),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Iconsax.activity,  itemName: 'Entrenamiento', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.activity,  itemName: 'Entrenamiento', colori: gbColors.neonPink),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Iconsax.mobile,  itemName: 'App', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.mobile,  itemName: 'App', colori: gbColors.neonPink),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-
                           ],
                         )
 

@@ -18,14 +18,14 @@ class gbMenuItem extends StatelessWidget {
   final IconData icon;
   final String itemName;
   final Color colori;
-  SearchBoardController get searchController => Get.find<SearchBoardController>();
+
 
   @override
   Widget build(BuildContext context) {
     final menuController = Get.put(gbSidebarController());
 
     return InkWell(
-      onTap: () =>   searchController.filterByCategory(itemName), //menuController.menuOnTap(route),
+      onTap: () =>   menuController.menuOnTap(itemName),
       onHover: (hovering) => hovering
           ? menuController.changeHoverItem(itemName)
           : menuController.changeHoverItem(''),

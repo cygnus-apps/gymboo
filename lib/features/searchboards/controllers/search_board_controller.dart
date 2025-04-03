@@ -7,7 +7,6 @@ class SearchBoardController extends GetxController {
   final searchText = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
-
   final RxList<ItemData> filteredItems = <ItemData>[].obs;
   final List<ItemData> allItems = [
     ItemData(
@@ -47,49 +46,56 @@ class SearchBoardController extends GetxController {
     ),
     ItemData(
       title: "Clases",
-      description: "Clases de algún tipo de actividad especifica por ejemplo Zumba",
+      description:
+          "Clases de algún tipo de actividad especifica por ejemplo Zumba",
       image: "assets/images/mantenimientos/mnt_clases.jpg",
       icon: Iconsax.teacher,
       category: "Gimnasio",
     ),
     ItemData(
       title: "Noticias",
-      description: "Configuración de la sección de noticias de la aplicación móvil",
+      description:
+          "Configuración de la sección de noticias de la aplicación móvil",
       image: "assets/images/mantenimientos/mnt_noticias.jpg",
       icon: Iconsax.note,
       category: "App",
     ),
     ItemData(
       title: "Contactos App",
-      description: "Contactos que aparecerán en la sección de contactos de la aplicación móvil",
+      description:
+          "Contactos que aparecerán en la sección de contactos de la aplicación móvil",
       image: "assets/images/mantenimientos/mnt_contactos2.jpg",
       icon: Iconsax.call,
       category: "App",
     ),
     ItemData(
       title: "Zonas",
-      description: "Zonas en las que está dividido el gimnasio por ejemplo peso libre, bicicletas, caminadoras.",
+      description:
+          "Zonas en las que está dividido el gimnasio por ejemplo peso libre, bicicletas, caminadoras.",
       image: "assets/images/mantenimientos/mnt_zonas.jpg",
       icon: Iconsax.map,
       category: "Gimnasio",
     ),
     ItemData(
       title: "Equipos",
-      description: "Equipos que tiene el gimnasio, seriado o no seriado ejemplo mancuernas, maq. Polea, abductor sentado.",
+      description:
+          "Equipos que tiene el gimnasio, seriado o no seriado ejemplo mancuernas, maq. Polea, abductor sentado.",
       image: "assets/images/mantenimientos/mnt_equipos.jpg",
       icon: Iconsax.weight,
       category: "Gimnasio",
     ),
     ItemData(
       title: "Actividad",
-      description: "Creación de actividades físicas, por ejemplo, press de banca, cross over.",
+      description:
+          "Creación de actividades físicas, por ejemplo, press de banca, cross over.",
       image: "assets/images/mantenimientos/mnt_actividades.jpg",
       icon: Iconsax.activity,
       category: "Entrenamiento",
     ),
     ItemData(
       title: "Varios",
-      description: "Mantenimiento de Intensidad – Grado -Tipo de actividad y Rango de Edades.",
+      description:
+          "Mantenimiento de Intensidad – Grado -Tipo de actividad y Rango de Edades.",
       image: "assets/images/mantenimientos/mnt_varios.jpg",
       icon: Iconsax.setting,
       category: "Entrenamiento",
@@ -110,7 +116,8 @@ class SearchBoardController extends GetxController {
     ),
     ItemData(
       title: "Definición de rutinas",
-      description: "Configuración de rutinas generales que podrían ser asignadas en los entrenamientos",
+      description:
+          "Configuración de rutinas generales que podrían ser asignadas en los entrenamientos",
       image: "assets/images/mantenimientos/mnt_rutinas.JPG",
       icon: Iconsax.calendar,
       category: "Entrenamiento",
@@ -137,7 +144,7 @@ class SearchBoardController extends GetxController {
       // Filtrar por el término de búsqueda
       List<ItemData> results = allItems
           .where((item) =>
-          item.title.toLowerCase().contains(searchTerm.toLowerCase()))
+              item.title.toLowerCase().contains(searchTerm.toLowerCase()))
           .toList();
       filteredItems.assignAll(results); // Usar assignAll en lugar de value =
     }
@@ -147,28 +154,18 @@ class SearchBoardController extends GetxController {
   }
 
   void filterByCategory(String category) {
-      String searchTerm = category; //searchController.text;
-      searchText.value = searchTerm;
-
-      if (searchTerm.isEmpty) {
-        // Si el campo de búsqueda está vacío, no mostrar ningún elemento
-        filteredItems.clear();
-      } else if (searchTerm == "%") {
-        // Si el campo de búsqueda contiene solo "%", mostrar todos los elementos
-        filteredItems.assignAll(allItems); // Usar assignAll en lugar de value =
-      } else {
-        // Filtrar por el término de búsqueda
-        List<ItemData> results = allItems
-            .where((item) =>
+    String searchTerm = category; //searchController.text;
+    searchText.value = searchTerm;
+    searchController.text = '';
+    // Filtrar por el término de búsqueda
+    List<ItemData> results = allItems
+        .where((item) =>
             item.category.toLowerCase().contains(searchTerm.toLowerCase()))
-            .toList();
-        filteredItems.assignAll(results); // Usar assignAll en lugar de value =
+        .toList();
+    filteredItems.assignAll(results); // Usar assignAll en lugar de value =
 
-
-      // Debug
-      print("Search term: $searchTerm, Items found: ${filteredItems.length}");
-    };
-
+    // Debug
+    print("Search term: $searchTerm, Items found: ${filteredItems.length}");
 
 
   }

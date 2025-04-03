@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
+import 'package:gymboo_admin/utils/device/device_utility.dart';
 
 class SearchResult extends StatelessWidget {
   SearchResult({super.key});
@@ -24,8 +25,8 @@ class SearchResult extends StatelessWidget {
             ),
           )
               : GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
+            gridDelegate:   SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: gbDeviceUtils.isMobileScreen(context) ?  1 : gbDeviceUtils.isTabletScreen(context) ?  3 : gbDeviceUtils.isDesktopScreen(context) ?  4 : 4 ,
               childAspectRatio: 1.0,
               crossAxisSpacing: 5.0,
               mainAxisSpacing: 5.0,
