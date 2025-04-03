@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:gymboo_admin/common/widgets/images/t_circular_image.dart';
 import 'package:gymboo_admin/common/widgets/layouts/sidebars/menu/menu_item.dart';
+import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
 import 'package:gymboo_admin/utils/constants/colors.dart';
 import 'package:gymboo_admin/utils/constants/image_strings.dart';
 import 'package:gymboo_admin/utils/constants/sizes.dart';
@@ -21,6 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class gbSitebar extends StatelessWidget {
   const gbSitebar({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +53,13 @@ class gbSitebar extends StatelessWidget {
                             //Menu Items
 
 
-                            const gbMenuItem(icon: Iconsax.setting_2, route: gbRoutes.login, itemName: 'Parametros', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.setting_2,   itemName: 'Parametros', colori: gbColors.primary),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Symbols.exercise, route: gbRoutes.login, itemName: 'Gimnasio', colori: gbColors.primary),
+                            const gbMenuItem(icon: Symbols.exercise,  itemName: 'Gimnasio', colori: gbColors.primary),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Iconsax.activity, route: gbRoutes.login, itemName: 'Entrenamiento', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.activity,  itemName: 'Entrenamiento', colori: gbColors.primary),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
-                            const gbMenuItem(icon: Iconsax.mobile, route: gbRoutes.login, itemName: 'App', colori: gbColors.primary),
+                            const gbMenuItem(icon: Iconsax.mobile,  itemName: 'App', colori: gbColors.primary),
                             const SizedBox(height: gbSizes.spaceBtwItems,),
 
                           ],
