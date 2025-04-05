@@ -18,11 +18,11 @@ class gbLoginHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Image(
-              width: 75,
-              height: 75,
-              image: AssetImage(gbImages.darkAppLogo)
+              width: 200,
+              height: 100,
+              image: AssetImage(gbImages.darkAppGLLogo )
           ),
-          const SizedBox(height: gbSizes.spaceBtwSections),
+         // const SizedBox(height: 1),
           Text(gbTexts.loginTitle,
               style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: gbSizes.sm),

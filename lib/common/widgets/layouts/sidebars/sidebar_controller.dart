@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
-import 'package:gymboo_admin/utils/device/device_utility.dart';
 import 'package:gymboo_admin/utils/routes/routes.dart';
 
 class gbSidebarController extends GetxController {

@@ -117,4 +117,25 @@ class LoginController extends GetxController {
       gbLoaders.errorSnackBar(title: 'registerAdmin - Ups', message: e.toString());
     }
   }
+
+//Google singin authentication
+Future<void> googleSignIn() async{
+try{
+
+  gbFullScreenLoader.openLoadingDialog('Iniciando sesion', gbImages.docerAnimation);
+  //check Internet
+  final isConnected = await NetworkManager.instance.isConnected();
+  if (!isConnected) {
+    gbFullScreenLoader.stopLoading();
+    return;
+  }
+  //google autentication
+  final userCredentials  = AuthenticationRepository.instance.signInWithGoogle();
+}catch(e){
+  gbLoaders.errorSnackBar(title: 'Oh no',message: e.toString());
+
+}
+
+}
+
 }

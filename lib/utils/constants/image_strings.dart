@@ -5,7 +5,8 @@
 class gbImages {
 
   // -- App Logos
-  static const String darkAppLogo = "assets/logos/gymboo-splash-logo-black.png";
+  static const String darkAppGSLogo = "assets/logos/gymboo-s-logo-black.png";
+  static const String darkAppGLLogo = "assets/logos/gymboo-l-logo-black.png";
   static const String lightAppLogo = "assets/logos/t-store-splash-logo-white.png";
 
   // -- Imagenes para los mantenimientos

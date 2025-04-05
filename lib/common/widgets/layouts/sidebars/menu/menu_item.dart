@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/common/widgets/layouts/sidebars/sidebar_controller.dart';
-import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
 import 'package:gymboo_admin/utils/constants/colors.dart';
 import 'package:gymboo_admin/utils/constants/sizes.dart';
 

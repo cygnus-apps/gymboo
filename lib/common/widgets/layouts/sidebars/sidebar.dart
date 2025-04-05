@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:gymboo_admin/common/widgets/images/t_circular_image.dart';
 import 'package:gymboo_admin/common/widgets/layouts/sidebars/menu/menu_item.dart';
-import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
 import 'package:gymboo_admin/utils/constants/colors.dart';
 import 'package:gymboo_admin/utils/constants/image_strings.dart';
 import 'package:gymboo_admin/utils/constants/sizes.dart';
-import 'package:gymboo_admin/utils/routes/routes.dart';
 import 'package:iconsax/iconsax.dart';
-import  'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:material_symbols_icons/symbols_map.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -39,7 +29,7 @@ class gbSitebar extends StatelessWidget {
           child: Column(
             children: [
               //Image
-              const gbCircularImage(width: 75, height: 75, image: gbImages.darkAppLogo,backgroundColor: Colors.transparent,
+              const gbCircularImage(width: 75, height: 75, image: gbImages.darkAppGSLogo,backgroundColor: Colors.transparent,
               ),
               const SizedBox(height: gbSizes.spaceBtwSections,),
                Padding(

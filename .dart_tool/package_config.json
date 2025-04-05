@@ -392,6 +392,42 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "google_identity_services_web",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_identity_services_web-0.3.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_sign_in-6.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "google_sign_in_android",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_sign_in_android-6.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "google_sign_in_ios",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_sign_in_ios-5.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in_platform_interface",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_sign_in_platform_interface-2.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "google_sign_in_web",
+      "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/google_sign_in_web-0.12.4+4",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "html",
       "rootUri": "file:///C:/Users/avega_k/AppData/Local/Pub/Cache/hosted/pub.dev/html-0.15.5",
       "packageUri": "lib/",
@@ -872,7 +908,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2025-04-02T15:25:18.487438Z",
+  "generated": "2025-04-03T18:06:48.901462Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/Users/avega_k/AppData/Local/dev/flutter",

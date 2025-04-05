@@ -12,7 +12,20 @@
           "package_name": "com.example.gymboo_admin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "339444274332-hnk1vbi3g9frtotp095t6stsvmk1adqd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gymboo_admin",
+            "certificate_hash": "ae1aa7d83286fcb2d475bb595ff2541db043f393"
+          }
+        },
+        {
+          "client_id": "339444274332-pedcthaavp6audf6ksibt48h91su28ee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBxBYzeazAoddmWrTPsew-ZvM9FyAxiozg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339444274332-pedcthaavp6audf6ksibt48h91su28ee.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

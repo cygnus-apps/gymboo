@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gymboo_admin/utils/constants/enums.dart';
 import 'package:gymboo_admin/utils/formatters/formatter.dart';
 
-
-
-
 /// Model class representing user data.
 class UserModel {
   final String? id;
@@ -38,6 +35,20 @@ class UserModel {
   String get formattedUpdatedAtDate => gbFormatter.formatDate(updatedAt);
   String get formattedPhoneNumber => gbFormatter.formatPhoneNumber(phoneNumber);
 
+  // Static function to split full name into first and last name.
+  static List<String> nameParts(String fullName) => fullName.split(" ");
+
+  // Static function to generate a username from the full name.
+  static String generateUsername(String fullName) {
+    List<String> nameParts = fullName.split(" ");
+    String firstName = nameParts[0].toLowerCase();
+    String lastName = nameParts.length > 1 ? nameParts[1].toLowerCase() : "";
+
+    String camelCaseUsername = "$firstName$lastName"; // Combine first and last name
+    String usernameWithPrefix = "gb_$camelCaseUsername"; // Add "cwt_" prefix
+    return usernameWithPrefix;
+  }
+
   /// Static function to create an empty user model.
   static UserModel empty() => UserModel(email: '');
 
@@ -61,13 +72,13 @@ class UserModel {
       final data = document.data()!;
       return UserModel(
         id: document.id,
-        firstName: data.containsKey('nombre') ? data['nombre'] ?? '' : '',
-        lastName: data.containsKey('apellidos') ? data['apellidos'] ?? '' : '',
-        username: data.containsKey('usuario') ? data['usuario'] ?? '' : '',
+        firstName: data.containsKey('firstName') ? data['firstName'] ?? '' : '',
+        lastName: data.containsKey('lastName') ? data['lastName'] ?? '' : '',
+        username: data.containsKey('username') ? data['username'] ?? '' : '',
         email: data.containsKey('email') ? data['email'] ?? '' : '',
-        phoneNumber: data.containsKey('telefono') ? data['telefono'] ?? '' : '',
-        profilePicture: data.containsKey('foto') ? data['foto'] ?? '' : '',
-        role: data.containsKey('rol') ? (data['rol'] ?? AppRole.user) == AppRole.admin.name.toString() ? AppRole.admin : AppRole.user : AppRole.user,
+        phoneNumber: data.containsKey('phoneNumber') ? data['phoneNumber'] ?? '' : '',
+        profilePicture: data.containsKey('profilePicture') ? data['profilePicture'] ?? '' : '',
+        role: data.containsKey('role') ? (data['role'] ?? AppRole.user) == AppRole.admin.name.toString() ? AppRole.admin : AppRole.user : AppRole.user,
         createdAt: data.containsKey('CreatedAt') ? data['CreatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
         updatedAt: data.containsKey('UpdatedAt') ? data['UpdatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
       ); // UserModel

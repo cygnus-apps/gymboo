@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gymboo_admin/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:gymboo_admin/utils/exceptions/firebase_exceptions.dart';
 import 'package:gymboo_admin/utils/exceptions/format_exceptions.dart';
@@ -58,6 +60,33 @@ class AuthenticationRepository extends GetxController{
     }
   }
 
+  //GOOGLE AUTHENTICATION
+  Future<UserCredential?> signInWithGoogle() async{
+    try {
+      // Aquí iría el código para el trigger authentication flow
+      final GoogleSignInAccount? userAcocount = await GoogleSignIn().signIn();
+      //obtiene los detalles de la autenticacion de el request
+      final GoogleSignInAuthentication? googleAuth = await userAcocount?.authentication;
+      //crea unas nuevas credenciales
+      final credentials = GoogleAuthProvider.credential (accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+
+      //una ves ya con el signin retorno las credenciales
+      return  await _auth.signInWithCredential(credentials);
+      
+
+    } on FirebaseAuthException catch (e) {
+      throw gbFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw gbFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const gbFormatException();
+    } on PlatformException catch (e) {
+      throw gbPlatformException(e.code).message;
+    } catch (e) {
+      if(kDebugMode) print('Something went wrong. $e');
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
   //Register
   Future<UserCredential> registerWithEmailAndPassword(String email, String password) async {
@@ -80,6 +109,24 @@ class AuthenticationRepository extends GetxController{
   //Register user by Admin
 
   //Email Verification
+  Future<void> sendEmailVerification() async{
+
+    try {
+      // Aquí iría el código para iniciar el envio de verificacion con email
+        await _auth.currentUser?.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      
+      throw gbFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw gbFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const gbFormatException();
+    } on PlatformException catch (e) {
+      throw gbPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
 
   //Forget Password
 

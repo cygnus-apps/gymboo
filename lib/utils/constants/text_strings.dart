@@ -42,7 +42,7 @@ class gbTexts {
   static const String resendEmailIn = "Resend email in";
 
   // -- Authentication Headings
-  static const String loginTitle = "Bienvenido a Gymboo!";
+  static const String loginTitle = "Bienvenido";
   static const String loginSubTitle = "Sistema Administrativo";
   static const String signupTitle = "Vamos a crear tu Cuenta";
   static const String forgetPasswordTitle = "Forget password";
