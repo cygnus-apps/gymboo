@@ -12,6 +12,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
       title: gbTexts.appName,
       themeMode: ThemeMode.light,
       theme: gbAppTheme.lightTheme,
@@ -21,6 +22,7 @@ class App extends StatelessWidget {
       initialBinding: GeneralBindings(),
       debugShowCheckedModeBanner: false,
       //scrollBehavior: MyCustomScrollBehavior(),
+
       unknownRoute: GetPage(
           name: '/page-not-fount',
           page: () => const Scaffold(

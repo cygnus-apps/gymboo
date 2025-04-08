@@ -61,30 +61,40 @@ class AuthenticationRepository extends GetxController{
   }
 
   //GOOGLE AUTHENTICATION
-  Future<UserCredential?> signInWithGoogle() async{
+  Future<UserCredential?> signInWithGoogle() async {
     try {
-      // Aquí iría el código para el trigger authentication flow
-      final GoogleSignInAccount? userAcocount = await GoogleSignIn().signIn();
-      //obtiene los detalles de la autenticacion de el request
-      final GoogleSignInAuthentication? googleAuth = await userAcocount?.authentication;
-      //crea unas nuevas credenciales
-      final credentials = GoogleAuthProvider.credential (accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+      final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
 
-      //una ves ya con el signin retorno las credenciales
-      return  await _auth.signInWithCredential(credentials);
-      
+      if (userAccount == null) {
+        // El usuario canceló el inicio de sesión
+        throw 'Google Sign-In was cancelled by the user.';
+      }
+
+      final GoogleSignInAuthentication googleAuth = await userAccount.authentication;
+
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        // Falló la obtención de los tokens de Google
+        throw 'Failed to obtain Google authentication tokens.';
+      }
+
+      final credentials = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken!,
+        idToken: googleAuth.idToken!,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credentials);
 
     } on FirebaseAuthException catch (e) {
-      throw gbFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw gbFirebaseException(e.code).message;
+      throw e.message ?? 'Firebase Authentication error occurred.';
     } on FormatException catch (_) {
-      throw const gbFormatException();
+      throw const FormatException();
     } on PlatformException catch (e) {
-      throw gbPlatformException(e.code).message;
+      throw e.message ?? 'Platform error during Google Sign-In.';
     } catch (e) {
-      if(kDebugMode) print('Something went wrong. $e');
-      throw 'Something went wrong. Please try again';
+      if (kDebugMode) {
+        print('Something went wrong: $e');
+      }
+      throw 'Something went wrong. Please try again.';
     }
   }
 

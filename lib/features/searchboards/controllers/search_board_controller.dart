@@ -28,7 +28,7 @@ class SearchBoardController extends GetxController {
       description: "Mantenimiento de usuarios de sistema",
       image: "assets/images/mantenimientos/mnt_usuarios.jpg",
       icon: Iconsax.user,
-      category: "Gimnasio",
+      category: "Parametros",
     ),
     ItemData(
       title: "Clientes",

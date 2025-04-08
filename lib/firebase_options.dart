@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCqdjvMaS0C8v8284SiQqY64lfblK9tUjo',
-    appId: '1:339444274332:web:17fa03e33c489152f0c959',
+    appId: '1:339444274332:web:4615fa6aed7fb1f6f0c959',
     messagingSenderId: '339444274332',
     projectId: 'gymboobd',
     authDomain: 'gymboobd.firebaseapp.com',

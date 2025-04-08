@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gymboo_admin/common/widgets/layouts/templates/login_template.dart';
 import 'package:gymboo_admin/features/authentication/screens_login/widgets/login_form.dart';
 import 'package:gymboo_admin/features/authentication/screens_login/widgets/login_header.dart';
+import 'package:gymboo_admin/features/authentication/screens_login/widgets/login_social_button.dart';
 
 
 
@@ -18,6 +19,8 @@ class LoginScreenDesktopTablet extends StatelessWidget {
           gbLoginHeader(),
           //Forms
           gbLoginForm(),
+          //google authentication
+          //gbSocialButton(),
         ],
       ),
 

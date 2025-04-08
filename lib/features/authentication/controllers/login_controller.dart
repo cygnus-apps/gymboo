@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gymboo_admin/data/repositories/authentication/authentication_repository.dart';
 import 'package:gymboo_admin/data/repositories/user/user_repository.dart';
-import 'package:gymboo_admin/features/authentication/controllers/user_controller.dart';
-import 'package:gymboo_admin/features/authentication/models/user_model.dart';
+import 'package:gymboo_admin/features/personalization/controllers/user_controller.dart';
+import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/utils/constants/enums.dart';
 import 'package:gymboo_admin/utils/constants/image_strings.dart';
 import 'package:gymboo_admin/utils/helpers/network_manager.dart';
@@ -21,6 +21,7 @@ class LoginController extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
+  final userController = Get.put(UserController());
 
   @override
   void onInit() {
@@ -54,7 +55,8 @@ class LoginController extends GetxController {
         localStore.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
       //Login user
-      await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
+      await AuthenticationRepository.instance
+          .loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
       //fetch user detail and assign to userController
 
@@ -66,22 +68,25 @@ class LoginController extends GetxController {
       //Registro de usuario usando email y password
       //await AuthenticationRepository.instance.registerWithEmailAndPassword(email as String, password as String);
 
-       //crea el registro de ADM en la Firestore
-       //final userRepository = Get.put(UserRepository());
-       //await userRepository.createUser(UserModel(
-       //   id: AuthenticationRepository.instance.authUser!.uid,
-       //   email: email as String,
-       //   role: AppRole.admin));
-       if(user.role!=   AppRole.admin){
-         await AuthenticationRepository.instance.Logout();
-         gbLoaders.errorSnackBar(title: 'emailPasswordSigIn - No Autorizado!', message: 'No tiene permiso para acceder, contacte con el Administrador.');
-       }else{
-         AuthenticationRepository.instance.screenRedirect();
-       }
-
+      //crea el registro de ADM en la Firestore
+      //final userRepository = Get.put(UserRepository());
+      //await userRepository.createUser(UserModel(
+      //   id: AuthenticationRepository.instance.authUser!.uid,
+      //   email: email as String,
+      //   role: AppRole.admin));
+      if (user.role != AppRole.admin) {
+        await AuthenticationRepository.instance.Logout();
+        gbLoaders.errorSnackBar(
+            title: 'emailPasswordSigIn - No Autorizado!',
+            message:
+                'No tiene permiso para acceder, contacte con el Administrador.');
+      } else {
+        AuthenticationRepository.instance.screenRedirect();
+      }
     } catch (e) {
       gbFullScreenLoader.stopLoading();
-      gbLoaders.errorSnackBar(title: 'emailPasswordSigIn - Ups', message: e.toString());
+      gbLoaders.errorSnackBar(
+          title: 'emailPasswordSigIn - Ups', message: e.toString());
     }
   }
 
@@ -99,11 +104,12 @@ class LoginController extends GetxController {
         return;
       }
       //Registro de usuario usando email y password
-      await AuthenticationRepository.instance.registerWithEmailAndPassword(email.value.text  , password.value.text  );
+      await AuthenticationRepository.instance
+          .registerWithEmailAndPassword(email.value.text, password.value.text);
 
       //crea el registro de ADM en la Firestore
       final userRepository = Get.put(UserRepository());
-      await userRepository.createUser(UserModel(
+      await userRepository.saveUserRecord(UserModel(
           id: AuthenticationRepository.instance.authUser!.uid,
           email: email.value.text,
           role: AppRole.admin));
@@ -111,31 +117,31 @@ class LoginController extends GetxController {
       //quito el loader
       gbFullScreenLoader.stopLoading();
 
+
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
       gbFullScreenLoader.stopLoading();
-      gbLoaders.errorSnackBar(title: 'registerAdmin - Ups', message: e.toString());
+      gbLoaders.errorSnackBar(
+          title: 'registerAdmin - Ups', message: e.toString());
     }
   }
 
-//Google singin authentication
-Future<void> googleSignIn() async{
-try{
-
-  gbFullScreenLoader.openLoadingDialog('Iniciando sesion', gbImages.docerAnimation);
-  //check Internet
-  final isConnected = await NetworkManager.instance.isConnected();
-  if (!isConnected) {
-    gbFullScreenLoader.stopLoading();
-    return;
+  //Google singin authentication
+  Future<void> googleSignIn() async {
+    try {
+      gbFullScreenLoader.openLoadingDialog('Iniciando sesion', gbImages.docerAnimation);
+      //check Internet
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        gbFullScreenLoader.stopLoading();
+        return;
+      }
+      //google autentication
+      final userCredentials = await AuthenticationRepository.instance.signInWithGoogle();
+      await userController.saveUserRecord(userCredentials!);
+      gbFullScreenLoader.stopLoading();
+    } catch (e) {
+      gbLoaders.errorSnackBar(title: 'Oh no!!', message: e.toString());
+    }
   }
-  //google autentication
-  final userCredentials  = AuthenticationRepository.instance.signInWithGoogle();
-}catch(e){
-  gbLoaders.errorSnackBar(title: 'Oh no',message: e.toString());
-
-}
-
-}
-
 }
