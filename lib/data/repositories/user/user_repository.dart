@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/data/repositories/authentication/authentication_repository.dart';
+import 'package:gymboo_admin/features/personalization/models/branch_model.dart';
 import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:gymboo_admin/utils/exceptions/firebase_exceptions.dart';
@@ -33,8 +34,31 @@ class UserRepository extends GetxController {
 
   Future<UserModel> fetchAdminDetails() async {
     try {
+      //final docSnapshot = await _db.collection('Users').doc(AuthenticationRepository.instance.authUser!.uid).get();
+      //return UserModel.fromSnapshot(docSnapshot);
+
       final docSnapshot = await _db.collection('Users').doc(AuthenticationRepository.instance.authUser!.uid).get();
-      return UserModel.fromSnapshot(docSnapshot);
+
+      // Get the user data
+      UserModel user = UserModel.fromSnapshot(docSnapshot);
+
+      // Get the branches collection for this user
+      final branchesSnapshot = await _db
+          .collection('Users')
+          .doc(AuthenticationRepository.instance.authUser!.uid)
+          .collection('branches')
+          .get();
+
+      // Process the branches data
+      List<BranchModel> branches = [];
+      for (var doc in branchesSnapshot.docs) {
+        branches.add(BranchModel.fromSnapshot(doc));
+      }
+
+      // Add branches to the user model (you'll need to modify your UserModel to include this)
+      user.branches = branches;
+
+      return user;
     } on FirebaseAuthException catch (e) {
       throw gbFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

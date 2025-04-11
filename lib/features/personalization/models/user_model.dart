@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gymboo_admin/utils/constants/enums.dart';
 import 'package:gymboo_admin/utils/formatters/formatter.dart';
 
+import 'branch_model.dart';
+
 /// Model class representing user data.
 class UserModel {
   final String? id;
@@ -11,6 +13,7 @@ class UserModel {
   String email;
   String phoneNumber;
   String profilePicture;
+  List<BranchModel> branches;
   AppRole role;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -27,7 +30,10 @@ class UserModel {
     this.role = AppRole.user,
     this.createdAt,
     this.updatedAt,
+    this.branches = const [], // Default to empty list
   });
+
+
 
   /// Helper methods
   String get fullName => '$firstName $lastName';
@@ -62,6 +68,7 @@ class UserModel {
       'phoneNumber': phoneNumber,
       'profilePicture': profilePicture,
       'role': role.name.toString(),
+
       'createdAt': createdAt,
       'updatedAt': updatedAt ?? DateTime.now(),
     };
@@ -81,7 +88,7 @@ class UserModel {
         role: data.containsKey('role') ? (data['role'] ?? AppRole.user) == AppRole.admin.name.toString() ? AppRole.admin : AppRole.user : AppRole.user,
         createdAt: data.containsKey('CreatedAt') ? data['CreatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
         updatedAt: data.containsKey('UpdatedAt') ? data['UpdatedAt']?.toDate() ?? DateTime.now() : DateTime.now(),
-      ); // UserModel
+      );
     } else {
       return empty();
     }

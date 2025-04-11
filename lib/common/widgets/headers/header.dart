@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/common/widgets/images/t_rounded_image.dart';
-import 'package:gymboo_admin/features/authentication/controllers/login_controller.dart' show LoginController;
+import 'package:gymboo_admin/features/authentication/controllers/login_controller.dart'
+    show LoginController;
 import 'package:gymboo_admin/features/personalization/controllers/user_controller.dart';
 import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
@@ -10,31 +11,33 @@ import 'package:gymboo_admin/utils/constants/enums.dart';
 import 'package:gymboo_admin/utils/constants/image_strings.dart';
 import 'package:gymboo_admin/utils/constants/sizes.dart';
 import 'package:gymboo_admin/utils/device/device_utility.dart';
+import 'package:gymboo_admin/utils/routes/routes.dart';
 import 'package:iconsax/iconsax.dart';
 
 class gbHeader extends StatelessWidget implements PreferredSize {
   gbHeader({super.key, this.scaffoldKey});
 
   final GlobalKey<ScaffoldState>? scaffoldKey;
-  final SearchBoardController searchController = Get.find<SearchBoardController>();
-
+  final SearchBoardController searchController =
+      Get.find<SearchBoardController>();
 
   // Use the following instead of direct find:
 
-
   @override
   Widget build(BuildContext context) {
-      UserController userController          = Get.find<UserController>();
+    UserController userController = Get.find<UserController>();
     return Container(
       decoration: const BoxDecoration(
           color: gbColors.white,
-          border: Border(bottom: BorderSide(color: gbColors.lightGrey, width: 1))),
-      padding: const EdgeInsets.symmetric(horizontal: gbSizes.md, vertical: gbSizes.sm),
+          border:
+              Border(bottom: BorderSide(color: gbColors.lightGrey, width: 1))),
+      padding: const EdgeInsets.symmetric(
+          horizontal: gbSizes.md, vertical: gbSizes.sm),
       child: AppBar(
         leading: !gbDeviceUtils.isDesktopScreen(context)
             ? IconButton(
-            onPressed: () => scaffoldKey?.currentState?.openDrawer(),
-            icon: const Icon(Iconsax.menu4))
+                onPressed: () => scaffoldKey?.currentState?.openDrawer(),
+                icon: const Icon(Iconsax.menu4))
             : null,
         title: SizedBox(
           width: 777,
@@ -48,7 +51,8 @@ class gbHeader extends StatelessWidget implements PreferredSize {
         ),
         actions: [
           if (!gbDeviceUtils.isDesktopScreen(context))
-            IconButton(icon: const Icon(Iconsax.search_normal), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Iconsax.search_normal), onPressed: () {}),
           IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
           const SizedBox(width: gbSizes.spaceBtwInputFields / 2),
           FutureBuilder<UserModel>(
@@ -64,12 +68,19 @@ class gbHeader extends StatelessWidget implements PreferredSize {
                 final UserModel userModel = snapshot.data!;
                 return Row(
                   children: [
-                    gbRoundedImage(
-                      imageType: ImageType.asset,
-                      image: userModel.profilePicture.isEmpty ? gbImages.user : userModel.profilePicture,
-                      width: 40,
-                      padding: 2,
-                      height: 40,
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
+                      },
+                      child: gbRoundedImage(
+                        imageType: ImageType.asset,
+                        image: userModel.profilePicture.isEmpty
+                            ? gbImages.user
+                            : userModel.profilePicture,
+                        width: 40,
+                        padding: 2,
+                        height: 40,
+                      ),
                     ),
                     const SizedBox(width: gbSizes.sm),
                     if (!gbDeviceUtils.isMobileScreen(context))
@@ -100,5 +111,6 @@ class gbHeader extends StatelessWidget implements PreferredSize {
   Widget get child => throw UnimplementedError();
 
   @override
-  Size get preferredSize => Size.fromHeight(gbDeviceUtils.getAppBarHeight() + 15);
+  Size get preferredSize =>
+      Size.fromHeight(gbDeviceUtils.getAppBarHeight() + 15);
 }
