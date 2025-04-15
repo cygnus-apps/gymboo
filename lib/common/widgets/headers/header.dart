@@ -27,7 +27,7 @@ class gbHeader extends StatelessWidget implements PreferredSize {
     return Container(
       decoration: const BoxDecoration(
           color: gbColors.white,
-          border:
+          border: 
               Border(bottom: BorderSide(color: gbColors.lightGrey, width: 1))),
       padding: const EdgeInsets.symmetric(
           horizontal: gbSizes.md, vertical: gbSizes.sm),
