@@ -14,7 +14,7 @@ class UserController extends GetxController {
   Future<UserModel> fetchUserDetail() async {
     try {
       var user = await UserRepository.instance.fetchAdminDetails();
-      selectedUser.value =  user;
+      //selectedUser.value =  user;
       return user;
     } catch (e) {
       gbLoaders.errorSnackBar(
