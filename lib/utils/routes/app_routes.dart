@@ -4,9 +4,11 @@ import 'package:gymboo_admin/features/authentication/screen_reset_password/reset
 import 'package:gymboo_admin/features/authentication/screens_login/login.dart';
 import 'package:gymboo_admin/features/personalization/screens/user_detail.dart';
 import 'package:gymboo_admin/features/searchboards/screens_searchboards/searchboard.dart';
-
 import 'package:gymboo_admin/utils/routes/routes.dart';
 import 'package:gymboo_admin/utils/routes/routes_middleware.dart';
+
+import '../../features/personalization/models/user_model.dart';
+
 
 class gbAppRoutes {
   static final List<GetPage> pages = <GetPage>[
@@ -15,12 +17,14 @@ class gbAppRoutes {
     GetPage(name: gbRoutes.resetPassword, page: () => const ResetPasswordScreen()),
     GetPage(name: gbRoutes.searchboard, page: () => const Searchboardcreen(),middlewares: [ gbRoutesMiddleware() ]),
     //GetPage(name: gbRoutes.userDetail, page: () => const gbUserDetailScreen(userModel: null,)),
+    // En tu archivo routes.dart
     GetPage(
-        name: gbRoutes.userDetail,
-        page: () {
-          var userModel = Get.arguments['userModel'];
-          return gbUserDetailScreen(userModel: userModel);
-        }
+      name: gbRoutes.userDetail,
+      page: () {
+        UserModel userModel = Get.arguments['userModel'];
+        return gbUserDetailScreen(userModel: userModel);
+      },
     ),
+
   ];
 }

@@ -43,7 +43,7 @@ dependencies:
   material_symbols_icons: ^4.2811.0
 
   # State Management
-  get: ^4.6.6
+  get: ^4.7.2
   get_storage: ^2.1.1
 
   # Firebase

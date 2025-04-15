@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gymboo_admin/features/personalization/models/user_model.dart' show UserModel;
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
 import 'package:gymboo_admin/utils/device/device_utility.dart';
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/common/widgets/images/t_rounded_image.dart';
-import 'package:gymboo_admin/features/authentication/controllers/login_controller.dart'
-    show LoginController;
 import 'package:gymboo_admin/features/personalization/controllers/user_controller.dart';
 import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
@@ -70,11 +68,13 @@ class gbHeader extends StatelessWidget implements PreferredSize {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        //Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
+                        //Get.toNamed(gbRoutes.userDetail, arguments: userModel);
                         Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
-                      },
-                      child: gbRoundedImage(
-                        imageType: ImageType.asset,
-                        image: userModel.profilePicture.isEmpty
+                        },
+                        child: gbRoundedImage(
+                          imageType: ImageType.asset,
+                          image: userModel.profilePicture.isEmpty
                             ? gbImages.user
                             : userModel.profilePicture,
                         width: 40,

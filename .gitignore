@@ -1,1 +1,99 @@
 build/f872507f30e2ff2523f0f1d19160266e.cache.dill.track.dill
+# Dart/Flutter specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+build/
+pubspec.lock
+.metadata
+ios/Flutter/.last_build_id
+
+# Android specific
+**/android/key.properties
+**/android/app/google-services.json
+**/android/local.properties
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# iOS specific
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/ephemeral
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/AppFrameworkInfo.plist
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GoogleService-Info.plist
+**/ios/*.mode1v3
+**/ios/*.mode2v3
+**/ios/*.moved-aside
+**/ios/*.pbxuser
+**/ios/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+
+# macOS specific
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/Flutter-Debug.xcconfig
+**/macos/Flutter/Flutter-Release.xcconfig
+**/macos/Flutter/Flutter-Profile.xcconfig
+
+# Environment config files (for API keys, secrets, etc.)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*
+lib/config/env.dart
+lib/config/secrets.dart
+lib/config/api_keys.dart
+lib/utils/secrets.dart
+assets/config/
+
+# IDE specific files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+.buildlog/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# FVM (Flutter Version Management) specific
+.fvm/flutter_sdk
+
+# Firebase specific files
+firebase_options.dart
+
+# Other sensitive files that might contain keys
+**/google-services.json
+**/GoogleService-Info.plist
+**/key.jks
+**/key.properties
+**/upload-keystore.jks

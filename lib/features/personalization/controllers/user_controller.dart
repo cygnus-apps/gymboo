@@ -11,7 +11,6 @@ class UserController extends GetxController {
   final userRepository = Get.put(UserRepository());
 
 
-
   Future<UserModel> fetchUserDetail() async {
     try {
       var user = await UserRepository.instance.fetchAdminDetails();
@@ -48,4 +47,12 @@ class UserController extends GetxController {
       gbLoaders.errorSnackBar(title: 'No guardo!', message: e.toString());
     }
   }
+  @override
+  void onClose() {
+    super.onClose();
+    // Limpieza de recursos del UserController (ej., cerrar streams)
+    print('UserController cerrado');
+  }
+
+
 }
