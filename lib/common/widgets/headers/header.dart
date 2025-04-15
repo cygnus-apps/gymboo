@@ -70,8 +70,7 @@ class gbHeader extends StatelessWidget implements PreferredSize {
                       onTap: () {
                         //Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
                         //Get.toNamed(gbRoutes.userDetail, arguments: userModel);
-                        Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
-                        Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
+                        Get.toNamed(gbRoutes.userDetail);
                         },
                         child: gbRoundedImage(
                           imageType: ImageType.asset,

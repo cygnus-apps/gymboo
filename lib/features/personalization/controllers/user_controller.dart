@@ -7,13 +7,14 @@ import 'package:gymboo_admin/utils/popups/loaders.dart';
 
 class UserController extends GetxController {
   static UserController get instance => Get.find();
-
+  Rx<UserModel?> selectedUser = Rx<UserModel?>(null);
   final userRepository = Get.put(UserRepository());
 
 
   Future<UserModel> fetchUserDetail() async {
     try {
       var user = await UserRepository.instance.fetchAdminDetails();
+      selectedUser.value =  user;
       return user;
     } catch (e) {
       gbLoaders.errorSnackBar(

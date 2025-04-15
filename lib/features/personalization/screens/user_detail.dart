@@ -13,13 +13,10 @@ class gbUserDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Obtener userModel de los argumentos si no fue proporcionado directamente
-    final UserModel effectiveUserModel = userModel ??
-        (Get.arguments is Map ? Get.arguments['userModel'] : Get.arguments);
 
     return gbSiteTemplate(
       useLayout: true,
-      desktop: gbUserDetailDesktop(userModel: effectiveUserModel),
+      desktop: gbUserDetailDesktop(),
     );
   }
 }
