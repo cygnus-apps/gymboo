@@ -6,23 +6,8 @@ import 'package:gymboo_admin/features/personalization/screens/user_detail_deskto
 
 
 
+
 class gbUserDetailScreen extends StatelessWidget {
-  final UserModel? userModel;
-
-  const gbUserDetailScreen({super.key, this.userModel});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return gbSiteTemplate(
-      useLayout: true,
-      desktop: gbUserDetailDesktop(),
-    );
-  }
-}
-
-
-/*class gbUserDetailScreen extends StatelessWidget {
   // Use key? key
   const gbUserDetailScreen({super.key, required this.userModel});
   final UserModel userModel;
@@ -34,4 +19,4 @@ class gbUserDetailScreen extends StatelessWidget {
       desktop: gbUserDetailDesktop(userModel: userModel),
     );
   }
-}*/
+}

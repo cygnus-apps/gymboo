@@ -18,18 +18,13 @@ class gbAppRoutes {
     GetPage(name: gbRoutes.searchboard, page: () => const Searchboardcreen(),middlewares: [ gbRoutesMiddleware() ]),
     //GetPage(name: gbRoutes.userDetail, page: () => const gbUserDetailScreen(userModel: null,)),
     // En tu archivo routes.dart
-    GetPage(
-      name: gbRoutes.userDetail,
-      page: () => const gbUserDetailScreen(),
-      transition: Transition.fadeIn,
-    )
-    /*GetPage(
+     GetPage(
       name: gbRoutes.userDetail,
       page: () {
         UserModel userModel = Get.arguments['userModel'];
         return gbUserDetailScreen(userModel: userModel);
       },
-    ),*/
+    ),
 
   ];
 }
