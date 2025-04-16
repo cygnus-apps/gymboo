@@ -11,12 +11,10 @@ class UserController extends GetxController {
   final userRepository = Get.put(UserRepository());
 
 
-
-
   Future<UserModel> fetchUserDetail() async {
     try {
       var user = await UserRepository.instance.fetchAdminDetails();
-      selectedUser.value =  await UserRepository.instance.fetchAdminDetails();
+      selectedUser.value =  user;
       return user;
     } catch (e) {
       gbLoaders.errorSnackBar(

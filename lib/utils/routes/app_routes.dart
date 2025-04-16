@@ -20,9 +20,16 @@ class gbAppRoutes {
     // En tu archivo routes.dart
     GetPage(
       name: gbRoutes.userDetail,
-      page: () => gbUserDetailScreen(),
+      page: () => const gbUserDetailScreen(),
       transition: Transition.fadeIn,
-    ),
+    )
+    /*GetPage(
+      name: gbRoutes.userDetail,
+      page: () {
+        UserModel userModel = Get.arguments['userModel'];
+        return gbUserDetailScreen(userModel: userModel);
+      },
+    ),*/
 
   ];
 }
