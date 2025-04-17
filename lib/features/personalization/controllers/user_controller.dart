@@ -48,6 +48,37 @@ class UserController extends GetxController {
       gbLoaders.errorSnackBar(title: 'No guardo!', message: e.toString());
     }
   }
+
+  /// Retorna el branch default del usuario seleccionado
+  /// Si no hay un branch marcado como default, retorna el primer branch activo
+  /// Si no hay branches activos, retorna el primer branch
+  /// Si no hay branches, retorna null
+  String? getDefaultBranchId() {
+    final user = selectedUser.value;
+    if (user == null || user.branches.isEmpty) return null;
+
+    // Primero buscar el branch marcado como default
+    final defaultBranch = user.branches
+        .where((branch) => branch.isDefault == "S" || branch.isDefault == "true")
+        .toList();
+
+    if (defaultBranch.isNotEmpty) {
+      return defaultBranch.first.name;
+    }
+
+    // Si no hay default, buscar el primer branch activo
+    final activeBranches = user.branches
+        .where((branch) => branch.state == "A")
+        .toList();
+
+    if (activeBranches.isNotEmpty) {
+      return activeBranches.first.name;
+    }
+
+    // Si no hay activos, devolver el primero de la lista
+    return user.branches.first.name;
+  }
+
   @override
   void onClose() {
     super.onClose();

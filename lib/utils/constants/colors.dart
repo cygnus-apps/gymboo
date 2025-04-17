@@ -19,7 +19,7 @@ class gbColors {
 
   // Background Container colors
   static const Color lightContainer = Color(0xFFF6F6F6);
-  static Color darkContainer = gbColors.white.withOpacity(0.1);
+  static Color darkContainer =        Color(0xFF757575);
 
   // Button colors
   static const Color buttonPrimary = Color(0xFF00FFFF);
@@ -46,7 +46,8 @@ class gbColors {
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
 
-  static const Color neonPink = Color(0xFFFF00FF);
+  static const Color neonPink  = Color(0xFFFF00FF);
+  static const Color blueShade = Color(0xE3F2FDFF);
 
 }
 

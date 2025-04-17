@@ -16,15 +16,15 @@ class gbAppRoutes {
     GetPage(name: gbRoutes.forgetPassword,page: () => const ForgetPasswordScreen()),
     GetPage(name: gbRoutes.resetPassword, page: () => const ResetPasswordScreen()),
     GetPage(name: gbRoutes.searchboard, page: () => const Searchboardcreen(),middlewares: [ gbRoutesMiddleware() ]),
-    //GetPage(name: gbRoutes.userDetail, page: () => const gbUserDetailScreen(userModel: null,)),
+    GetPage(name: gbRoutes.userDetail, page: () => const gbUserDetailScreen(),middlewares: [ gbRoutesMiddleware() ]),
     // En tu archivo routes.dart
-     GetPage(
-      name: gbRoutes.userDetail,
-      page: () {
-        UserModel userModel = Get.arguments['userModel'];
-        return gbUserDetailScreen(userModel: userModel);
-      },
-    ),
+    // GetPage(
+    //  name: gbRoutes.userDetail,
+    //  page: () {
+     //   UserModel userModel = Get.arguments['userModel'];
+      //  return gbUserDetailScreen(userModel: userModel);
+      //},
+    //),*/
 
   ];
 }

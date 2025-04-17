@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gymboo_admin/common/widgets/images/t_rounded_image.dart';
 import 'package:gymboo_admin/features/personalization/controllers/user_controller.dart';
-import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/features/searchboards/controllers/search_board_controller.dart';
 import 'package:gymboo_admin/utils/constants/colors.dart';
 import 'package:gymboo_admin/utils/constants/enums.dart';
@@ -19,11 +18,14 @@ class gbHeader extends StatelessWidget implements PreferredSize {
   final SearchBoardController searchController =
       Get.find<SearchBoardController>();
 
-  // Use the following instead of direct find:
-
   @override
   Widget build(BuildContext context) {
-    UserController userController = Get.find<UserController>();
+    // Obtener la instancia del UserController
+    final UserController userController = Get.find<UserController>();
+
+    // Verificar si estamos en la página searchboard
+    bool isOnSearchBoard = Get.currentRoute.contains('searchboard');
+
     return Container(
       decoration: const BoxDecoration(
           color: gbColors.white,
@@ -32,13 +34,16 @@ class gbHeader extends StatelessWidget implements PreferredSize {
       padding: const EdgeInsets.symmetric(
           horizontal: gbSizes.md, vertical: gbSizes.sm),
       child: AppBar(
+        // Mostrar el botón de menú solo en searchboard en dispositivos móviles
+        // En otras páginas, mostrar el botón de atrás
+        // En searchboard con dispositivos de escritorio, no mostrar nada
         leading: !gbDeviceUtils.isDesktopScreen(context)
             ? IconButton(
                 onPressed: () => scaffoldKey?.currentState?.openDrawer(),
                 icon: const Icon(Iconsax.menu4))
             : null,
         title: SizedBox(
-          width: 777,
+          width: 900,
           child: TextFormField(
             controller: searchController.searchController,
             decoration: const InputDecoration(
@@ -53,55 +58,54 @@ class gbHeader extends StatelessWidget implements PreferredSize {
                 icon: const Icon(Iconsax.search_normal), onPressed: () {}),
           IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
           const SizedBox(width: gbSizes.spaceBtwInputFields / 2),
-          FutureBuilder<UserModel>(
-            future: userController.fetchUserDetail(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // Puedes mostrar un indicador de carga aquí
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                // Puedes mostrar un mensaje de error aquí
-                return Text('Error: ${snapshot.error}');
-              } else if (snapshot.hasData) {
-                final UserModel userModel = snapshot.data!;
-                return Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        //Get.toNamed(gbRoutes.userDetail, arguments: {'userModel': userModel});
-                        //Get.toNamed(gbRoutes.userDetail, arguments: userModel);
-                        Get.toNamed(gbRoutes.userDetail);
-                        },
-                        child: gbRoundedImage(
-                          imageType: ImageType.asset,
-                          image: userModel.profilePicture.isEmpty
-                            ? gbImages.user
-                            : userModel.profilePicture,
-                        width: 40,
-                        padding: 2,
-                        height: 40,
-                      ),
-                    ),
-                    const SizedBox(width: gbSizes.sm),
-                    if (!gbDeviceUtils.isMobileScreen(context))
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(userModel.role.name,
-                              style: Theme.of(context).textTheme.titleMedium),
-                          Text(userModel.email,
-                              style: Theme.of(context).textTheme.labelMedium),
-                        ],
-                      ),
-                  ],
-                );
-              } else {
-                // Puedes mostrar un estado por defecto si no hay datos
-                return const SizedBox.shrink();
-              }
-            },
-          ),
+
+          // Usar Obx para observar cambios en selectedUser
+          Obx(() {
+            final user = userController.selectedUser.value;
+
+            // Si no hay usuario cargado todavía
+            if (user == null) {
+              // Intentar cargar datos si es necesario (primera vez)
+              userController.fetchUserDetail();
+              return const CircularProgressIndicator();
+            }
+
+            // Si hay usuario, mostrar la información
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(gbRoutes.userDetail);
+                  },
+                  child: gbRoundedImage(
+                    imageType: ImageType.asset,
+                    image: user.profilePicture.isEmpty
+                        ? gbImages.user
+                        : user.profilePicture,
+                    width: 40,
+                    padding: 2,
+                    height: 40,
+                  ),
+                ),
+                const SizedBox(width: gbSizes.sm),
+                if (!gbDeviceUtils.isMobileScreen(context))
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Text(userController.getDefaultBranchId() ?? "Sin sucursal",
+                        style: Theme.of(context).textTheme.labelSmall),
+                      Text(user.email,
+                          style: Theme.of(context).textTheme.labelMedium),
+                      /*Text(user.role.name,
+                          style: Theme.of(context).textTheme.labelSmall),*/
+
+                    ],
+                  ),
+              ],
+            );
+          }),
         ],
       ),
     );

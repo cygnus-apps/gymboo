@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BranchModel {
-  final String branch;
-  final String name;
-  final String state;
-  final String isDefault;
+   String branch;
+   String name;
+   String state;
+   String isDefault;
 
   BranchModel({
     required this.branch,

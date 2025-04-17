@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gymboo_admin/features/personalization/controllers/user_controller.dart';
 import 'package:gymboo_admin/features/personalization/models/branch_model.dart';
 import 'package:gymboo_admin/features/personalization/models/user_model.dart';
 import 'package:gymboo_admin/utils/constants/enums.dart';
@@ -7,30 +9,27 @@ import 'package:gymboo_admin/utils/constants/colors.dart';
 
 /// Widget que muestra los detalles de un usuario y permite cambiar su branch predeterminado a nivel de sistema
 class gbUserDetailDesktop extends StatefulWidget {
-  final UserModel userModel;
-
-  const gbUserDetailDesktop({super.key, required this.userModel});
-
+  const gbUserDetailDesktop({super.key});
 
   @override
   State<gbUserDetailDesktop> createState() => _GbUserDetailDesktopState();
 }
 
 class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
-  UserModel? _effectiveUser;
+  final UserController _userController = Get.find<UserController>();
   String? _systemDefaultBranchId;
 
   @override
   void initState() {
     super.initState();
-    _effectiveUser = widget.userModel;
     _initializeSystemDefaultBranch();
   }
 
   void _initializeSystemDefaultBranch() {
-    if (_effectiveUser != null && _effectiveUser!.branches.isNotEmpty) {
+    final user = _userController.selectedUser.value;
+    if (user != null && user.branches.isNotEmpty) {
       // Primero intentamos encontrar el que está marcado como predeterminado en DB
-      final defaultBranch = _effectiveUser!.branches
+      final defaultBranch = user.branches
           .where((branch) => branch.isDefault == "S" || branch.isDefault == "true")
           .toList();
 
@@ -38,21 +37,59 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
         _systemDefaultBranchId = defaultBranch.first.branch;
       } else {
         // Si no hay ninguno marcado como predeterminado, usar el primero activo
-        final activeBranches = _effectiveUser!.branches
+        final activeBranches = user.branches
             .where((branch) => branch.state == "A")
             .toList();
 
         if (activeBranches.isNotEmpty) {
           _systemDefaultBranchId = activeBranches.first.branch;
-        } else if (_effectiveUser!.branches.isNotEmpty) {
+        } else if (user.branches.isNotEmpty) {
           // Si no hay activos, usar el primero de la lista
-          _systemDefaultBranchId = _effectiveUser!.branches.first.branch;
+          _systemDefaultBranchId = user.branches.first.branch;
         }
       }
     }
   }
 
+
   void _setSystemDefaultBranch(BranchModel branch) {
+    setState(() {
+      _systemDefaultBranchId = branch.branch;
+    });
+
+    // Actualizar el selectedUser en el controlador
+    if (_userController.selectedUser.value != null) {
+      final currentUser = _userController.selectedUser.value!;
+
+      // Primero, resetear todos los branches a no-default
+      for (var userBranch in currentUser.branches) {
+        userBranch.isDefault = "N";
+      }
+
+      // Luego establecer el seleccionado como default
+      final index = currentUser.branches
+          .indexWhere((b) => b.branch == branch.branch);
+
+      if (index != -1) {
+        currentUser.branches[index].isDefault = "S";
+
+        // Como estamos modificando un objeto dentro de un Rx,
+        // necesitamos notificar el cambio
+        _userController.selectedUser.refresh();
+      }
+    }
+
+    // Notificar al usuario
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Sucursal establecida como predeterminada'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  /*void _setSystemDefaultBranch(BranchModel branch) {
     setState(() {
       _systemDefaultBranchId = branch.branch;
     });
@@ -68,68 +105,77 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
 
     // Aquí podrías guardar esta preferencia en SharedPreferences o similar
     // para mantenerla entre sesiones
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    // It's null safe here, because we require it in constructor.
-    final user = _effectiveUser!;
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Cabecera con foto de perfil y nombre
-            _buildProfileHeader(user, theme),
-            // Detalles del usuario
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Sección de información personal
-                  _buildSectionTitle('Información Personal', Icons.person_outline),
-                  const SizedBox(height: 8),
-                  _buildInfoCard([
-                    _buildInfoRow(Icons.email_outlined, 'Email', user.email),
-                    _buildInfoRow(
-                        Icons.phone_outlined, 'Teléfono', user.phoneNumber),
-                    _buildInfoRow(
-                        Icons.badge_outlined, 'Nombre de usuario', user.username),
-                    _buildInfoRow(Icons.admin_panel_settings_outlined, 'Rol',
-                        _getRoleName(user.role)),
-                  ]),
-                  const SizedBox(height: 24),
-                  // Sección de cuenta
-                  _buildSectionTitle('Información de Cuenta', Icons.access_time),
-                  const SizedBox(height: 8),
-                  _buildInfoCard([
-                    _buildInfoRow(
-                        Icons.calendar_today_outlined,
-                        'Fecha de creación',
-                        user.createdAt != null
-                            ? _formatDate(user.createdAt!)
-                            : 'No disponible'),
-                    _buildInfoRow(
-                        Icons.update_outlined,
-                        'Última actualización',
-                        user.updatedAt != null
-                            ? _formatDate(user.updatedAt!)
-                            : 'No disponible'),
-                  ]),
-                  const SizedBox(height: 24),
-                  // Sección de sucursales
-                  if (user.branches.isNotEmpty) ...[
-                    _buildBranchesSection(user),
-                  ] else
-                    _buildEmptyBranchesMessage(),
-                ],
+      body: Obx(() {
+        final user = _userController.selectedUser.value;
+
+        // Si no hay usuario, mostrar un indicador de carga
+        if (user == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              // Cabecera con foto de perfil y nombre
+              _buildProfileHeader(user, theme),
+              // Detalles del usuario
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Sección de información personal
+                    _buildSectionTitle('Información Personal', Icons.person_outline),
+                    const SizedBox(height: 8),
+                    _buildInfoCard([
+                      _buildInfoRow(Icons.email_outlined, 'Email', user.email),
+                      _buildInfoRow(
+                          Icons.phone_outlined, 'Teléfono', user.phoneNumber),
+                      _buildInfoRow(
+                          Icons.badge_outlined, 'Nombre de usuario', user.username),
+                      _buildInfoRow(Icons.admin_panel_settings_outlined, 'Rol',
+                          _getRoleName(user.role)),
+                    ]),
+                    const SizedBox(height: 24),
+                    // Sección de cuenta
+                    _buildSectionTitle('Información de Cuenta', Icons.access_time),
+                    const SizedBox(height: 8),
+                    _buildInfoCard([
+                      _buildInfoRow(
+                          Icons.calendar_today_outlined,
+                          'Fecha de creación',
+                          user.createdAt != null
+                              ? _formatDate(user.createdAt!)
+                              : 'No disponible'),
+                      _buildInfoRow(
+                          Icons.update_outlined,
+                          'Última actualización',
+                          user.updatedAt != null
+                              ? _formatDate(user.updatedAt!)
+                              : 'No disponible'),
+                    ]),
+                    const SizedBox(height: 24),
+                    // Sección de sucursales
+                    if (user.branches.isNotEmpty) ...[
+                      _buildBranchesSection(user),
+                    ] else
+                      _buildEmptyBranchesMessage(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -138,11 +184,12 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
+            gbColors.primary.withOpacity(0.7),
             gbColors.neonPink,
-            theme.colorScheme.primary.withOpacity(0.7),
+
           ],
         ),
       ),
@@ -163,7 +210,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
+                  color: gbColors.primary,
                 ),
               )
                   : null,
@@ -175,7 +222,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: gbColors.white,
               ),
             ),
             const SizedBox(height: 4),
@@ -183,13 +230,13 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: gbColors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
                 _getRoleName(user.role),
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: gbColors.white,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -206,15 +253,15 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
         Icon(
           icon,
           size: 20,
-          color: Theme.of(context).colorScheme.primary,
+          color: gbColors.primary,
         ),
         const SizedBox(width: 8),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
+            color: gbColors.primary,
           ),
         ),
       ],
@@ -245,7 +292,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
           Icon(
             icon,
             size: 18,
-            color: Colors.grey[600],
+            color: gbColors.darkContainer,//grey[600],
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -256,7 +303,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
                   label,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    color: gbColors.darkContainer,//grey[600],
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -300,7 +347,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
                     'Solo para esta sesión',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: gbColors.darkContainer,//.grey.shade600,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -326,12 +373,12 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: isSystemDefault
-                    ? BorderSide(
-                    color: Theme.of(context).colorScheme.primary, width: 2)
+                    ? const BorderSide(
+                    color: gbColors.primary, width: 2)//Theme.of(context).colorScheme.primary, width: 2)
                     : BorderSide.none,
               ),
               elevation: isSystemDefault ? 4 : 1,
-              color: isSystemDefault ? Colors.blue.shade50 : null,
+              color: isSystemDefault ? gbColors.blueShade : null,
               child: ListTile(
                 contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -342,44 +389,7 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
                     fontSize: 16,
                   ),
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: branch.state == "A"
-                            ? Colors.green.shade100
-                            : Colors.red.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        branch.state == "A" ? 'Activa' : 'Inactiva',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: branch.state == "A"
-                              ? Colors.green.shade800
-                              : Colors.red.shade800,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    if (isDbDefault)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          'Predeterminada en base de datos',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.orange.shade800,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+
                 trailing: isSystemDefault
                     ? Container(
                   padding: const EdgeInsets.all(8),
@@ -395,8 +405,8 @@ class _GbUserDetailDesktopState extends State<gbUserDetailDesktop> {
                     : branch.state == "A"
                     ? IconButton(
                   icon: const Icon(
-                    Icons.star_outline,
-                    color: Colors.amber,
+                    Icons.radio_button_unchecked_outlined, //star_outline,
+                    color: Colors.blue,
                   ),
                   tooltip:
                   'Establecer como predeterminada del sistema',
